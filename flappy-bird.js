@@ -1,17 +1,21 @@
 /*
-** draw a pair of poles from x axis position and pole height parameters
+** draw a pair of poles from x axis value and pole's height value
 */
 function drawPoles(pole_x: number, pole_height: number) {
-    // draw top pole by looping
-    // 
+    // draw top pole by turning on the 
+    // LED from 0 to pole_height + 1
     for (let i = 0; i <= pole_height + 1; i++) {
         led.plot(pole_x, pole_height - i);
+        // set pole brightness to 125
         led.plotBrightness(pole_x, pole_height - i, 125);
     }
-    // draw bottom pole by looping
-    // 
+    // draw top pole by turning on the 
+    // LED from 4 to pole_height + 3 (+3 to create 
+    // a 2-LED wide gap for bird clearance)
+    // (might add a hard mode to make the gap 1 LED wide in the future)
     for (let i = 4; i >= pole_height + 3; i--) {
         led.plot(pole_x, i);
+        // set pole brightness to 125
         led.plotBrightness(pole_x, i, 125);
     }
 }
@@ -22,17 +26,8 @@ function drawPoles(pole_x: number, pole_height: number) {
 function clearColumn(x: number) {
     // go through all 4 of the row's LEDs
     for (let y = 0; y <= 4; y++) {
-        // if row to clear is bird's x position
-        if (x == bird_x) {
-            // clear columns around the bird only
-            for (let y2 = 0; y2 <= 4; y2++) {
-                if (y2 != bird_y) {
-                    led.unplot(x, y2);
-                }
-            }
-        }
-        else {
-            led.unplot(x, y);
+        // clear column LEDS
+        // turn on LED at bird's position
         }
     }
 }
@@ -41,7 +36,9 @@ function clearColumn(x: number) {
 ** draw bird by turning on LED at bird x and y axis
 */
 function drawBird() {
+    // turn on the LED of the bird
     led.plot(bird_x, bird_y);
+    // set bird's LED brightness to maximum
     led.plotBrightness(bird_x, bird_y, 255);
 }
 
@@ -49,9 +46,13 @@ function drawBird() {
 ** move bird up by 1 LED in y axis
 */
 function jump() {
+    // turn off the LED of the current bird
     led.unplot(bird_x, bird_y);
+    // add to y axis to move the bird up
     bird_y--;
+    // turn on the LED of the bird with new y axis position
     led.plot(bird_x, bird_y);
+    // set bird's LED brightness to maximum
     led.plotBrightness(bird_x, bird_y, 255);
 }
 
@@ -71,9 +72,13 @@ function jump() {
 ** move bird down by 1 LED in y axis
 */
 function descendBird() {
+    // turn off the LED of the current bird
     led.unplot(bird_x, bird_y);
+    // add to y axis to move the bird down
     bird_y += 0.5;
+    // turn on the LED of the bird with new y axis position
     led.plot(bird_x, bird_y);
+    // set bird's LED brightness to maximum
     led.plotBrightness(bird_x, bird_y, 255);
 }
 
@@ -81,6 +86,11 @@ function descendBird() {
 ** draw 1st pair of poles
 */
 function drawPoles1() {
+    // if pole finished its loop
+        // clear first column (far left) LEDs
+        // clear the column shown 1 LED to the right of the current x axis
+        // clear column LEDs before drawing new poles
+        // show poles at row x
     if (poles1 == -2) {
         if (-1 - poles1_x == -5) {
             clearColumn(0);
@@ -90,6 +100,7 @@ function drawPoles1() {
         clearColumn(Math.abs(-1 - poles1_x));
         clearColumn(poles1_x); // clear column LEDs before drawing new poles
         drawPoles(poles1_x, poles1); // show poles at column
+        // move x axis 1 LED to the left
         poles1_x--;
     }
 }
@@ -98,15 +109,13 @@ function drawPoles1() {
 ** draw 2nd pair of poles
 */
 function drawPoles2() {
-    if (poles2 == -2) {
-        if (-1 - poles2_x == -5) {
-            clearColumn(0);
-        }
+    // if pole finished its loop
+        // clear first column (far left) LEDs
     }
-    if (poles2 > -2) {
-        clearColumn(Math.abs(-1 - poles2_x));
-        clearColumn(poles2_x); // clear column LEDs before drawing new poles
-        drawPoles(poles2_x, poles2); // show poles at column
+        // clear the column shown 1 LED to the right of the current x axis
+        // clear column LEDs before drawing new poles
+        // show poles at row x
+        // move x axis 1 LED to the left
         poles2_x--;
     }
 }
@@ -115,22 +124,28 @@ function drawPoles2() {
 ** random poles' heights and reset x axis position
 */
 function resetPolesPos() {
-    if (poles1 == -3) {
-        poles1 = randint(-1, 2);
+    // randomize first pair of poles' height value
     }
-    if (poles1 == -2) {
-        poles1--;
+    // first pair of poles' height value is -2, 
+    // decrease by 1 as means for it to display
+    // every three iterations of the while loop
     }
+    // first pair of poles' height value is less
+    // than 0, reset x axis value and set height
+    // to -2 to delay it from displaying
     if (poles1_x < 0) {
         poles1_x = 4;
         poles1 = -2;
     }
-    if (poles2 == -3) {
-        poles2 = randint(-1, 2);
+    // randomize second pair of poles' height value
     }
-    if (poles2 == -2) {
-        poles2--;
+    // second pair of poles' height value is -2, 
+    // decrease by 1 as means for it to display
+    // every three iterations of the while loop
     }
+    // second pair of poles' height value is less
+    // than 0, reset x axis value and set height
+    // to -2 to delay it from displaying
     if (poles2_x < 0) {
         poles2_x = 4;
         poles2 = -2;
@@ -295,8 +310,7 @@ basic.forever(function () {
 
             // check if is still first loop
             if (first_time) {
-                // random second pair of poles' heights
-                poles2 = randint(-1, 2);
+                // randomize second pair of poles' heights
             }
             drawPoles2(); // draw second pair of poles
 
