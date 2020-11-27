@@ -87,19 +87,18 @@ function descendBird() {
 */
 function drawPoles1() {
     // if pole finished its loop
+    if (poles1_height == -2 && poles1_x == 4) {
         // clear first column (far left) LEDs
-        // clear the column shown 1 LED to the right of the current x axis
-        // clear column LEDs before drawing new poles
-        // show poles at row x
-    if (poles1 == -2) {
-        if (-1 - poles1_x == -5) {
-            clearColumn(0);
-        }
+        clearColumnLEDs(0);
     }
-    if (poles1 > -2) {
-        clearColumn(Math.abs(-1 - poles1_x));
-        clearColumn(poles1_x); // clear column LEDs before drawing new poles
-        drawPoles(poles1_x, poles1); // show poles at column
+    if (poles1_height > -2) {
+        // clear the column shown 1 LED to the right of the current x axis
+        clearColumnLEDs(Math.abs(-1 - poles1_x));
+        // clear column LEDs before drawing new poles
+        clearColumnLEDs(poles1_x);
+        // show poles at row x
+        drawPoles(poles1_x, poles1_height);
+
         // move x axis 1 LED to the left
         poles1_x--;
     }
@@ -110,11 +109,18 @@ function drawPoles1() {
 */
 function drawPoles2() {
     // if pole finished its loop
+    if (poles2_height == -2 && poles2_x == 4) {
         // clear first column (far left) LEDs
+        clearColumnLEDs(0);
     }
+    if (poles2_height > -2) {
         // clear the column shown 1 LED to the right of the current x axis
+        clearColumnLEDs(Math.abs(-1 - poles2_x));
         // clear column LEDs before drawing new poles
+        clearColumnLEDs(poles2_x);
         // show poles at row x
+        drawPoles(poles2_x, poles2_height);
+
         // move x axis 1 LED to the left
         poles2_x--;
     }
@@ -125,30 +131,38 @@ function drawPoles2() {
 */
 function resetPolesPos() {
     // randomize first pair of poles' height value
+    if (poles1_height == -3) {
+        poles1_height = randint(-1, 2);
     }
     // first pair of poles' height value is -2, 
     // decrease by 1 as means for it to display
     // every three iterations of the while loop
+    if (poles1_height == -2) {
+        poles1_height--;
     }
     // first pair of poles' height value is less
     // than 0, reset x axis value and set height
     // to -2 to delay it from displaying
     if (poles1_x < 0) {
         poles1_x = 4;
-        poles1 = -2;
+        poles1_height = -2;
     }
     // randomize second pair of poles' height value
+    if (poles2_height == -3) {
+        poles2_height = randint(-1, 2);
     }
     // second pair of poles' height value is -2, 
     // decrease by 1 as means for it to display
     // every three iterations of the while loop
+    if (poles2_height == -2) {
+        poles2_height--;
     }
     // second pair of poles' height value is less
     // than 0, reset x axis value and set height
     // to -2 to delay it from displaying
     if (poles2_x < 0) {
         poles2_x = 4;
-        poles2 = -2;
+        poles2_height = -2;
     }
 }
 
@@ -311,6 +325,7 @@ basic.forever(function () {
             // check if is still first loop
             if (first_time) {
                 // randomize second pair of poles' heights
+                poles2_height = randint(-1, 2);
             }
             drawPoles2(); // draw second pair of poles
 
