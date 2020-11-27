@@ -257,6 +257,27 @@ function checkImpact() {
     }
 }
 
+
+basic.forever(function () {
+    // ------------------- //
+    // starting animations //
+    // ------------------- //
+    // 3 2 1 countdown before the game starts
+    for (let j = 3; j > 0; j--) {
+        basic.showNumber(j);
+        basic.pause(500);
+    }
+
+    // play music when the word "GO!" is on screen
+    music.startMelody(music.builtInMelody(Melodies.Entertainer))
+    basic.clearScreen();
+    basic.showString("GO!")
+    basic.clearScreen();
+    // -------------------------- //
+    // end of starting animations //
+    // -------------------------- //
+
+    while (in_game) {
         // draw bird on screen
         drawBird();
 
