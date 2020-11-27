@@ -68,7 +68,6 @@ function jump() {
 //     led.plotBrightness(bird_x, bird_y, 255);
 // }
 
-
 /*
 ** move bird down by 1 LED in y axis
 */
@@ -257,6 +256,36 @@ function checkImpact() {
     }
 }
 
+let first_time = true;  // boolean for first loop check 
+let in_game = true; // boolean to check if game is on-going
+let poles1_height = randint(-1, 2); // 1st pair of poles' height
+let poles1_x = 4; // 1st pair of poles' x axis
+let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 are disabled)
+let poles2_x = 4; // 2nd pair of poles' x axis
+let bird_x = 1; // bird x axis
+let bird_y = 2; // bird y axis
+let i = 7;  // give some time for player before showing poles
+let point = 0; // store player points
+
+/*
+** make the bird go up when A is pressed
+*/
+input.onButtonPressed(Button.A, function () {
+    // prevent going out of bounds
+    if (bird_y > 0) {
+        jump();
+    }
+})
+
+/*
+** make the bird go up when B is pressed
+*/
+input.onButtonPressed(Button.B, function () {
+    // prevent going out of bounds
+    if (bird_y > 0) {
+        jump();
+    }
+})
 
 basic.forever(function () {
     // ------------------- //
@@ -343,9 +372,7 @@ basic.forever(function () {
         if (i < 0) {
             i = 4;
         }
-        // add to score after every sucessful pole dodge
-
-
+        
         // pull bird down every frame
         descendBird();
 
