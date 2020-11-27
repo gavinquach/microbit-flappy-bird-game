@@ -23,12 +23,13 @@ function drawPoles(pole_x: number, pole_height: number) {
 /*
 ** turn off all LEDs for column at row x
 */
-function clearColumn(x: number) {
+function clearColumnLEDs(x: number) {
     // go through all 4 of the row's LEDs
     for (let y = 0; y <= 4; y++) {
         // clear column LEDS
+        led.unplot(x, y);
         // turn on LED at bird's position
-        }
+        drawBird();
     }
 }
 
