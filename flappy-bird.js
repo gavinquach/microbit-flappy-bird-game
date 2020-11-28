@@ -257,7 +257,7 @@ function checkImpact() {
 }
 
 let first_time = true;  // boolean for first loop check 
-let in_game = true; // boolean to check if game is on-going
+let in_game = false; // boolean to check if game is on-going
 let poles1_height = randint(-1, 2); // 1st pair of poles' height
 let poles1_x = 4; // 1st pair of poles' x axis
 let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 are disabled)
@@ -271,9 +271,11 @@ let point = 0; // store player points
 ** make the bird go up when A is pressed
 */
 input.onButtonPressed(Button.A, function () {
-    // prevent going out of bounds
-    if (bird_y > 0) {
-        jump();
+    if (in_game) {
+        // prevent going out of bounds
+        if (bird_y > 0) {
+            jump();
+        }
     }
 })
 
@@ -281,9 +283,11 @@ input.onButtonPressed(Button.A, function () {
 ** make the bird go up when B is pressed
 */
 input.onButtonPressed(Button.B, function () {
-    // prevent going out of bounds
-    if (bird_y > 0) {
-        jump();
+    if (in_game) {
+        // prevent going out of bounds
+        if (bird_y > 0) {
+            jump();
+        }
     }
 })
 
@@ -305,6 +309,7 @@ basic.forever(function () {
     // -------------------------- //
     // end of starting animations //
     // -------------------------- //
+    in_game = true;
 
     while (in_game) {
         // draw bird on screen
@@ -372,7 +377,7 @@ basic.forever(function () {
         if (i < 0) {
             i = 4;
         }
-        
+
         // pull bird down every frame
         descendBird();
 
