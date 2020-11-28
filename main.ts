@@ -270,7 +270,7 @@ function checkImpact() {
 
 let poles1_height = randint(-1, 2); // 1st pair of poles' height
 let poles1_x = 4; // 1st pair of poles' x axis
-let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 are disabled)
+let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 mean disabled)
 let poles2_x = 4; // 2nd pair of poles' x axis
 let bird_x = 1; // bird x axis
 let bird_y = 2; // bird y axis
