@@ -94,24 +94,30 @@ function descendBird() {
 ** draw 1st pair of poles
 */
 function drawPoles1() {
-    // if pole finished its loop
-    if (poles1_height == -2 && poles1_x == 4) {
+    // if pair of poles finished their run through the screen
+    if (poles1_x == 5) {
         // clear first column (far left) LEDs
         clearColumnLEDs(0);
     }
-    if (poles1_height > -2) {
-        // clear the column shown 1 LED to the right of the current x axis
-        clearColumnLEDs(Math.abs(-1 - poles1_x));
-        // clear column LEDs before drawing new poles
-        clearColumnLEDs(poles1_x);
-        // show poles at row x
-        drawPoles(poles1_x, poles1_height);
 
-        // check bird impact
-        checkImpact();
+    // clear the column shown 1 LED to the right of the current x axis
+    clearColumnLEDs(Math.abs(-1 - poles1_x));
+    // clear column LEDs before drawing new poles
+    clearColumnLEDs(poles1_x);
+    // show poles at row x
+    drawPoles(poles1_x, poles1_height);
 
-        // move x axis 1 LED to the left
-        poles1_x--;
+    // check bird impact
+    checkImpact();
+
+    // move pole 1 LED to the left
+    poles1_x--;
+
+    // pair of poles finished their run through the screen
+    // reset x axis value and randomize height
+    if (poles1_x < 0) {
+        poles1_x = 5;
+        poles1_height = randint(-1, 2);
     }
 }
 
@@ -119,64 +125,30 @@ function drawPoles1() {
 ** draw 2nd pair of poles
 */
 function drawPoles2() {
-    // if pole finished its loop
-    if (poles2_height == -2 && poles2_x == 4) {
+    // if pair of poles finished their run through the screen
+    if (poles2_x == 5) {
         // clear first column (far left) LEDs
         clearColumnLEDs(0);
     }
-    if (poles2_height > -2) {
-        // clear the column shown 1 LED to the right of the current x axis
-        clearColumnLEDs(Math.abs(-1 - poles2_x));
-        // clear column LEDs before drawing new poles
-        clearColumnLEDs(poles2_x);
-        // show poles at row x
-        drawPoles(poles2_x, poles2_height);
 
-        // check bird impact
-        checkImpact();
+    // clear the column shown 1 LED to the right of the current x axis
+    clearColumnLEDs(Math.abs(-1 - poles2_x));
+    // clear column LEDs before drawing new poles
+    clearColumnLEDs(poles2_x);
+    // show poles at row x
+    drawPoles(poles2_x, poles2_height);
 
-        // move x axis 1 LED to the left
-        poles2_x--;
-    }
-}
+    // check bird impact
+    checkImpact();
 
-/*
-** random poles' heights and reset x axis position
-*/
-function resetPolesPos() {
-    // randomize first pair of poles' height value
-    if (poles1_height == -3) {
-        poles1_height = randint(-1, 2);
-    }
-    // first pair of poles' height value is -2, 
-    // decrease by 1 as means for it to display
-    // every three iterations of the while loop
-    if (poles1_height == -2) {
-        poles1_height--;
-    }
-    // first pair of poles' height value is less
-    // than 0, reset x axis value and set height
-    // to -2 to delay it from displaying
-    if (poles1_x < 0) {
-        poles1_x = 4;
-        poles1_height = -2;
-    }
-    // randomize second pair of poles' height value
-    if (poles2_height == -3) {
-        poles2_height = randint(-1, 2);
-    }
-    // second pair of poles' height value is -2, 
-    // decrease by 1 as means for it to display
-    // every three iterations of the while loop
-    if (poles2_height == -2) {
-        poles2_height--;
-    }
-    // second pair of poles' height value is less
-    // than 0, reset x axis value and set height
-    // to -2 to delay it from displaying
+    // move pole 1 LED to the left
+    poles2_x--;
+
+    // pair of poles finished their run through the screen
+    // reset x axis value and randomize height
     if (poles2_x < 0) {
-        poles2_x = 4;
-        poles2_height = -2;
+        poles2_x = 5;
+        poles2_height = randint(-1, 2);
     }
 }
 
@@ -197,61 +169,55 @@ function checkImpact() {
             // soundExpression.sad.play();
         }
 
-        // if 1st pair of poles are on screen
-        if (poles1_height > -2) {
-            // if the pole is at the bird's position
-            if (poles1_x == bird_x) {
-                // if bird's y axis is within the poles' heights
-                if (bird_y <= poles1_height || bird_y >= poles1_height + 3) {
-                    // end the game
-                    in_game = false;
+        // if the pole is at the bird's position
+        if (poles1_x == bird_x) {
+            // if bird's y axis is within the poles' heights
+            if (bird_y <= poles1_height || bird_y >= poles1_height + 3) {
+                // end the game
+                in_game = false;
 
-                    // play sounds to indicate that the 
-                    // player has hit a pole and the game has ended
-                    music.playTone(Note.G, 200);
-                    music.playTone(Note.G3, 500);
-                    music.startMelody(music.builtInMelody(Melodies.Funeral))
+                // play sounds to indicate that the 
+                // player has hit a pole and the game has ended
+                music.playTone(Note.G, 200);
+                music.playTone(Note.G3, 500);
+                music.startMelody(music.builtInMelody(Melodies.Funeral))
 
-                    // micro:bit v2 sound
-                    // soundExpression.sad.play();
-                }
-                else {
-                    point++;
+                // micro:bit v2 sound
+                // soundExpression.sad.play();
+            }
+            else {
+                point++;
 
-                    // play sounds to indicate player has
-                    // successfully dodged the poles
-                    music.playTone(Note.GSharp4, 150);
-                    music.playTone(Note.GSharp5, 150);
-                }
+                // play sounds to indicate player has
+                // successfully dodged the poles
+                music.playTone(Note.GSharp4, 150);
+                music.playTone(Note.GSharp5, 150);
             }
         }
 
-        // if 2nd pair of poles are on screen
-        if (poles2_x > -2) {
-            // if the pole is at the bird's position
-            if (poles2_x == bird_x) {
-                // if bird's y axis is within the poles' heights
-                if (bird_y <= poles2_height || bird_y >= poles2_height + 3) {
-                    // end the game
-                    in_game = false;
-                    
-                    // play sounds to indicate that the 
-                    // player has hit a pole and the game has ended
-                    music.playTone(Note.G, 200);
-                    music.playTone(Note.G3, 500);
-                    music.startMelody(music.builtInMelody(Melodies.Funeral))
+        // if the pole is at the bird's position
+        if (poles2_x == bird_x) {
+            // if bird's y axis is within the poles' heights
+            if (bird_y <= poles2_height || bird_y >= poles2_height + 3) {
+                // end the game
+                in_game = false;
+                
+                // play sounds to indicate that the 
+                // player has hit a pole and the game has ended
+                music.playTone(Note.G, 200);
+                music.playTone(Note.G3, 500);
+                music.startMelody(music.builtInMelody(Melodies.Funeral))
 
-                    // micro:bit v2 sound
-                    // soundExpression.sad.play();
-                }
-                else {
-                    point++;
+                // micro:bit v2 sound
+                // soundExpression.sad.play();
+            }
+            else {
+                point++;
 
-                    // play sounds to indicate player has
-                    // successfully dodged the poles
-                    music.playTone(Note.GSharp4, 150);
-                    music.playTone(Note.GSharp5, 150);
-                }
+                // play sounds to indicate player has
+                // successfully dodged the poles
+                music.playTone(Note.GSharp4, 150);
+                music.playTone(Note.GSharp5, 150);
             }
         }
     }
@@ -265,12 +231,13 @@ function checkImpact() {
 }
 
 let poles1_height = randint(-1, 2); // 1st pair of poles' height
-let poles1_x = 4; // 1st pair of poles' x axis
-let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 mean disabled)
-let poles2_x = 4; // 2nd pair of poles' x axis
+let poles1_x = 5; // 1st pair of poles' x axis
+let poles2_height = randint(-1, 2); // 2nd pair of poles' height
+let poles2_x = 5; // 2nd pair of poles' x axis
 let bird_x = 1; // bird x axis
 let bird_y = 2; // bird y axis
-let i = 7;  // give some time for player before showing poles
+let show_poles2_countdown = 3;  // count to draw 2nd pair of poles 2 
+                                // LEDs away from first pole
 let point = 0; // store player points
 let select_mode = true;    // select mode stage
 let in_game = false; // boolean to check if game is on-going
@@ -357,42 +324,24 @@ basic.forever(function () {
             // pull bird down every frame
             descendBird();
 
-            if (i == 1) {
-                drawPoles1(); // draw first pair of poles
+            // draw 1st pair of poles
+            drawPoles1();
 
-                // check if is still first loop
-                if (first_time) {
-                    // randomize second pair of poles' heights
-                    poles2_height = randint(-1, 2);
-                }
-                drawPoles2(); // draw second pair of poles
-
-                // check if is not first loop
-                if (!first_time) {
-                    // reset and randomize poles
-                    resetPolesPos();
-                }
-                
-                // first loop over
+            // set first run to false
+            if (show_poles2_countdown == 0) {
                 first_time = false;
             }
-            else if (i <= 4) {
-                drawPoles1(); // draw first pair of poles
-
-                // check if is not first loop
-                if (!first_time) {
-                    drawPoles2(); // draw second pair of poles
-                    resetPolesPos(); // reset and randomize poles
-                }
+            // draw 2nd pair of poles
+            if (!first_time) {
+                drawPoles2();
             }
 
-            // keep iterating
-            i--;
-            if (i < 0) {
-                i = 4;
+            // continue countdown if is first run
+            if (first_time) {
+                show_poles2_countdown--;
             }
 
-            // delay for 500ms until next frame
+            // delay animations
             basic.pause(500);
         }
     }
