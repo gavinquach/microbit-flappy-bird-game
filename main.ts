@@ -198,7 +198,7 @@ function checkImpact() {
     }
 
     // if the pole is at the bird's position
-    if (poles2_x == bird_x) {
+    else if (poles2_x == bird_x) {
         if (easy_mode) {
             bottom_poles_height = poles2_height + 3;
         }
@@ -352,7 +352,7 @@ basic.forever(function () {
             }
 
             // delay animations
-            basic.pause(500);
+            basic.pause(550);
         }
     }
 })
