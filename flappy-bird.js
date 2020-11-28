@@ -315,34 +315,7 @@ basic.forever(function () {
         // draw bird on screen
         drawBird();
 
-        if (i == 4) {
-            drawPoles1(); // draw first pair of poles
-
-            // check if is not first loop
-            if (!first_time) {
-                drawPoles2(); // draw second pair of poles
-                resetPolesPos(); // reset and randomize poles
-            }
-        }
-        else if (i == 3) {
-            drawPoles1(); // draw first pair of poles
-
-            // check if is not first loop
-            if (!first_time) {
-                drawPoles2(); // draw second pair of poles
-                resetPolesPos(); // reset and randomize poles
-            }
-        }
-        else if (i == 2) {
-            drawPoles1(); // draw first pair of poles
-
-            // check if is not first loop
-            if (!first_time) {
-                drawPoles2(); // draw second pair of poles
-                resetPolesPos(); // reset and randomize poles
-            }
-        }
-        else if (i == 1) {
+        if (i == 1) {
             drawPoles1(); // draw first pair of poles
 
             // check if is still first loop
@@ -357,18 +330,17 @@ basic.forever(function () {
                 // reset and randomize poles
                 resetPolesPos();
             }
-        }
-        else if (i == 0) {
-            drawPoles1(); // draw first pair of poles
-            drawPoles2(); // draw second pair of poles
             
             // first loop over
             first_time = false;
+        }
+        else if (i <= 4) {
+            drawPoles1(); // draw first pair of poles
 
             // check if is not first loop
             if (!first_time) {
-                // reset and randomize poles
-                resetPolesPos();
+                drawPoles2(); // draw second pair of poles
+                resetPolesPos(); // reset and randomize poles
             }
         }
 
@@ -377,7 +349,6 @@ basic.forever(function () {
         if (i < 0) {
             i = 4;
         }
-
         // pull bird down every frame
         descendBird();
 
