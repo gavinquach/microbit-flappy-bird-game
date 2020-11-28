@@ -63,6 +63,7 @@ function jump() {
     led.unplot(bird_x, bird_y);
     // add to y axis to move the bird up
     bird_y--;
+    bird_y = Math.floor(bird_y);
     // turn on the LED of the bird with new y axis position
     led.plot(bird_x, bird_y);
     // set bird's LED brightness to maximum
@@ -358,8 +359,8 @@ basic.forever(function () {
         in_game = true;
 
         while (in_game) {
-            // draw bird on screen
-            drawBird();
+            // pull bird down every frame
+            descendBird();
 
             if (i == 1) {
                 drawPoles1(); // draw first pair of poles
@@ -395,8 +396,6 @@ basic.forever(function () {
             if (i < 0) {
                 i = 4;
             }
-            // pull bird down every frame
-            descendBird();
 
             // delay for 500ms until next frame
             basic.pause(500);
