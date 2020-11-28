@@ -9,14 +9,26 @@ function drawPoles(pole_x: number, pole_height: number) {
         // set pole brightness to 125
         led.plotBrightness(pole_x, pole_height - i, 125);
     }
-    // draw top pole by turning on the 
-    // LED from 4 to pole_height + 3 (+3 to create 
-    // a 2-LED wide gap for bird clearance)
-    // (might add a hard mode to make the gap 1 LED wide in the future)
-    for (let i = 4; i >= pole_height + 3; i--) {
-        led.plot(pole_x, i);
-        // set pole brightness to 125
-        led.plotBrightness(pole_x, i, 125);
+
+    if (easy_mode) {
+        // draw top pole by turning on the 
+        // LED from 4 to pole_height + 3 (+3 to create 
+        // a 2-LED wide gap for bird clearance)
+        for (let i = 4; i >= pole_height + 3; i--) {
+            led.plot(pole_x, i);
+            // set pole brightness to 125
+            led.plotBrightness(pole_x, i, 125);
+        }
+    }
+    else {
+        // draw top pole by turning on the 
+        // LED from 4 to pole_height + 3 (+2 to create 
+        // a 1-LED wide gap for bird clearance)
+        for (let i = 4; i >= pole_height + 2; i--) {
+            led.plot(pole_x, i);
+            // set pole brightness to 125
+            led.plotBrightness(pole_x, i, 125);
+        }
     }
 }
 
@@ -256,8 +268,6 @@ function checkImpact() {
     }
 }
 
-let first_time = true;  // boolean for first loop check 
-let in_game = false; // boolean to check if game is on-going
 let poles1_height = randint(-1, 2); // 1st pair of poles' height
 let poles1_x = 4; // 1st pair of poles' x axis
 let poles2_height = -3; // 2nd pair of poles' height (-3 and -2 are disabled)
@@ -266,93 +276,130 @@ let bird_x = 1; // bird x axis
 let bird_y = 2; // bird y axis
 let i = 7;  // give some time for player before showing poles
 let point = 0; // store player points
+let select_mode = true;    // select mode stage
+let in_game = false; // boolean to check if game is on-going
+let easy_mode = true; // true = easy mode: poles have a 2-LED wide gap
+                      // false = hard mode: poles have a 1-LED wide gap
+let first_time = true;  // boolean for first loop check 
 
 /*
-** make the bird go up when A is pressed
+** when button A is pressed
 */
 input.onButtonPressed(Button.A, function () {
+    // in-game, make bird jump
     if (in_game) {
         // prevent going out of bounds
         if (bird_y > 0) {
             jump();
         }
     }
+    // during select mode period
+    else if (select_mode) {
+        // clear screen LEDs
+        basic.clearScreen();
+        // stop showing mode selection string
+        led.stopAnimation();
+        // no longer at mode selection period
+        select_mode = false;
+        // set game to easy mode
+        easy_mode = true;
+    }
 })
 
 /*
-** make the bird go up when B is pressed
+** when button B is pressed
 */
 input.onButtonPressed(Button.B, function () {
+    // in-game, make bird jump
     if (in_game) {
         // prevent going out of bounds
         if (bird_y > 0) {
             jump();
         }
+    }
+    // during select mode period
+    else if (select_mode) {
+        // clear screen LEDs
+        basic.clearScreen();
+        // stop showing mode selection string
+        led.stopAnimation();
+        // no longer at mode selection period
+        select_mode = false;
+        // set game to hard mode
+        easy_mode = false;
     }
 })
 
 basic.forever(function () {
-    // ------------------- //
-    // starting animations //
-    // ------------------- //
-    // 3 2 1 countdown before the game starts
-    for (let j = 3; j > 0; j--) {
-        basic.showNumber(j);
-        basic.pause(500);
+    // mode selection stage
+    if (select_mode) {
+        basic.showString("MODE:A=EASY B=HARD  ", 125);
     }
-
-    // play music when the word "GO!" is on screen
-    music.startMelody(music.builtInMelody(Melodies.Entertainer))
-    basic.clearScreen();
-    basic.showString("GO!")
-    basic.clearScreen();
-    // -------------------------- //
-    // end of starting animations //
-    // -------------------------- //
-    in_game = true;
-
-    while (in_game) {
-        // draw bird on screen
-        drawBird();
-
-        if (i == 1) {
-            drawPoles1(); // draw first pair of poles
-
-            // check if is still first loop
-            if (first_time) {
-                // randomize second pair of poles' heights
-                poles2_height = randint(-1, 2);
-            }
-            drawPoles2(); // draw second pair of poles
-
-            // check if is not first loop
-            if (!first_time) {
-                // reset and randomize poles
-                resetPolesPos();
-            }
-            
-            // first loop over
-            first_time = false;
+    // game start
+    else {
+        // ------------------- //
+        // starting animations //
+        // ------------------- //
+        // 3-2-1 countdown before the game starts
+        for (let j = 3; j > 0; j--) {
+            basic.showNumber(j);
+            basic.pause(500);
         }
-        else if (i <= 4) {
-            drawPoles1(); // draw first pair of poles
 
-            // check if is not first loop
-            if (!first_time) {
+        // play music and display the word "GO!"
+        music.startMelody(music.builtInMelody(Melodies.Entertainer))
+        basic.clearScreen();
+        basic.showString("GO!");
+        basic.clearScreen();
+        // -------------------------- //
+        // end of starting animations //
+        // -------------------------- //
+
+        in_game = true;
+
+        while (in_game) {
+            // draw bird on screen
+            drawBird();
+
+            if (i == 1) {
+                drawPoles1(); // draw first pair of poles
+
+                // check if is still first loop
+                if (first_time) {
+                    // randomize second pair of poles' heights
+                    poles2_height = randint(-1, 2);
+                }
                 drawPoles2(); // draw second pair of poles
-                resetPolesPos(); // reset and randomize poles
+
+                // check if is not first loop
+                if (!first_time) {
+                    // reset and randomize poles
+                    resetPolesPos();
+                }
+                
+                // first loop over
+                first_time = false;
             }
-        }
+            else if (i <= 4) {
+                drawPoles1(); // draw first pair of poles
 
-        // keep iterating
-        i--;
-        if (i < 0) {
-            i = 4;
-        }
-        // pull bird down every frame
-        descendBird();
+                // check if is not first loop
+                if (!first_time) {
+                    drawPoles2(); // draw second pair of poles
+                    resetPolesPos(); // reset and randomize poles
+                }
+            }
 
-        // delay for 500ms until next frame
-        basic.pause(500);
+            // keep iterating
+            i--;
+            if (i < 0) {
+                i = 4;
+            }
+            // pull bird down every frame
+            descendBird();
+
+            // delay for 500ms until next frame
+            basic.pause(500);
+        }
     }
 })
