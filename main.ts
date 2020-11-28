@@ -64,10 +64,7 @@ function jump() {
     // add to y axis to move the bird up
     bird_y--;
     bird_y = Math.floor(bird_y);
-    // turn on the LED of the bird with new y axis position
-    led.plot(bird_x, bird_y);
-    // set bird's LED brightness to maximum
-    led.plotBrightness(bird_x, bird_y, 255);
+    drawBird();
 }
 
 /*
@@ -90,9 +87,7 @@ function descendBird() {
     // add to y axis to move the bird down
     bird_y += 0.5;
     // turn on the LED of the bird with new y axis position
-    led.plot(bird_x, bird_y);
-    // set bird's LED brightness to maximum
-    led.plotBrightness(bird_x, bird_y, 255);
+    drawBird();
 }
 
 /*
