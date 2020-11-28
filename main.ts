@@ -107,9 +107,6 @@ function drawPoles1() {
     // show poles at row x
     drawPoles(poles1_x, poles1_height);
 
-    // check bird impact
-    checkImpact();
-
     // move pole 1 LED to the left
     poles1_x--;
 
@@ -138,9 +135,6 @@ function drawPoles2() {
     // show poles at row x
     drawPoles(poles2_x, poles2_height);
 
-    // check bird impact
-    checkImpact();
-
     // move pole 1 LED to the left
     poles2_x--;
 
@@ -156,69 +150,83 @@ function drawPoles2() {
 ** check if the bird makes impact with a pole
 */
 function checkImpact() {
-    if (in_game) {
-        // if the bird descends passed the bottom of the screen
-        if (bird_y > 4) {
+    // if the bird descends passed the bottom of the screen
+    if (bird_y > 4) {
+        // end the game
+        in_game = false;
+        music.playTone(Note.G, 200);
+        music.playTone(Note.G3, 500);
+        music.startMelody(music.builtInMelody(Melodies.Funeral))
+
+        // micro:bit v2 sound
+        // soundExpression.sad.play();
+    }
+
+    let bottom_poles_height = 0;
+
+    // if the pole is at the bird's position
+    if (poles1_x == bird_x) {
+        if (easy_mode) {
+            bottom_poles_height = poles1_height + 3;
+        }
+        else {
+            bottom_poles_height = poles1_height + 2;
+        }
+        
+        // if bird's y axis is within the poles' heights
+        if (bird_y <= poles1_height || bird_y >= bottom_poles_height) {
             // end the game
             in_game = false;
+
+            // play sounds to indicate that the 
+            // player has hit a pole and the game has ended
             music.playTone(Note.G, 200);
             music.playTone(Note.G3, 500);
-            music.startMelody(music.builtInMelody(Melodies.Funeral))
+            music.startMelody(music.builtInMelody(Melodies.Funeral));
 
             // micro:bit v2 sound
             // soundExpression.sad.play();
         }
+        else {
+            point++;
 
-        // if the pole is at the bird's position
-        if (poles1_x == bird_x) {
-            // if bird's y axis is within the poles' heights
-            if (bird_y <= poles1_height || bird_y >= poles1_height + 3) {
-                // end the game
-                in_game = false;
+            // play sounds to indicate player has
+            // successfully dodged the poles
+            music.playTone(Note.GSharp4, 150);
+            music.playTone(Note.GSharp5, 150);
+        }
+    }
 
-                // play sounds to indicate that the 
-                // player has hit a pole and the game has ended
-                music.playTone(Note.G, 200);
-                music.playTone(Note.G3, 500);
-                music.startMelody(music.builtInMelody(Melodies.Funeral))
-
-                // micro:bit v2 sound
-                // soundExpression.sad.play();
-            }
-            else {
-                point++;
-
-                // play sounds to indicate player has
-                // successfully dodged the poles
-                music.playTone(Note.GSharp4, 150);
-                music.playTone(Note.GSharp5, 150);
-            }
+    // if the pole is at the bird's position
+    if (poles2_x == bird_x) {
+        if (easy_mode) {
+            bottom_poles_height = poles2_height + 3;
+        }
+        else {
+            bottom_poles_height = poles2_height + 2;
         }
 
-        // if the pole is at the bird's position
-        if (poles2_x == bird_x) {
-            // if bird's y axis is within the poles' heights
-            if (bird_y <= poles2_height || bird_y >= poles2_height + 3) {
-                // end the game
-                in_game = false;
-                
-                // play sounds to indicate that the 
-                // player has hit a pole and the game has ended
-                music.playTone(Note.G, 200);
-                music.playTone(Note.G3, 500);
-                music.startMelody(music.builtInMelody(Melodies.Funeral))
+        // if bird's y axis is within the poles' heights
+        if (bird_y <= poles2_height || bird_y >= bottom_poles_height) {
+            // end the game
+            in_game = false;
+            
+            // play sounds to indicate that the 
+            // player has hit a pole and the game has ended
+            music.playTone(Note.G, 200);
+            music.playTone(Note.G3, 500);
+            music.startMelody(music.builtInMelody(Melodies.Funeral));
 
-                // micro:bit v2 sound
-                // soundExpression.sad.play();
-            }
-            else {
-                point++;
+            // micro:bit v2 sound
+            // soundExpression.sad.play();
+        }
+        else {
+            point++;
 
-                // play sounds to indicate player has
-                // successfully dodged the poles
-                music.playTone(Note.GSharp4, 150);
-                music.playTone(Note.GSharp5, 150);
-            }
+            // play sounds to indicate player has
+            // successfully dodged the poles
+            music.playTone(Note.GSharp4, 150);
+            music.playTone(Note.GSharp5, 150);
         }
     }
     // game ended
@@ -323,6 +331,8 @@ basic.forever(function () {
         while (in_game) {
             // pull bird down every frame
             descendBird();
+            // check bird impact
+            checkImpact();
 
             // draw 1st pair of poles
             drawPoles1();
