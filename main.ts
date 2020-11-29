@@ -337,22 +337,28 @@ basic.forever(function () {
             // draw 1st pair of poles
             drawPoles1();
 
-            // set first run to false
-            if (show_poles2_countdown == 0) {
-                first_time = false;
-            }
-            // draw 2nd pair of poles
-            if (!first_time) {
-                drawPoles2();
-            }
+            if (easy_mode) {
+                // set first run to false
+                if (show_poles2_countdown == 0) {
+                    first_time = false;
+                }
+                // draw 2nd pair of poles
+                if (!first_time) {
+                    drawPoles2();
+                }
 
-            // continue countdown if is first run
-            if (first_time) {
-                show_poles2_countdown--;
-            }
+                // continue countdown if is first run
+                if (first_time) {
+                    show_poles2_countdown--;
+                }
 
-            // delay animations
-            basic.pause(550);
+                // delay animations
+                basic.pause(550);
+            }
+            else {
+                // delay animations
+                basic.pause(500);
+            }
         }
     }
 })
