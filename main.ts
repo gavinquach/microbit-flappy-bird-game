@@ -114,7 +114,19 @@ function drawPoles1() {
     // reset x axis value and randomize height
     if (poles1_x < 0) {
         poles1_x = 5;
-        poles1_height = randint(-1, 2);
+        if (!easy_mode) {
+            // make the pole gap at a height that's possible 
+            // for the bird to fall down to
+            if (poles2_height == -1) {
+                poles1_height = randint(-1, 2);
+            }
+            else {
+                poles1_height = randint(-1, 3);
+            }
+        }
+        else {
+                poles1_height = randint(-1, 2);
+        }
     }
 }
 
@@ -142,7 +154,19 @@ function drawPoles2() {
     // reset x axis value and randomize height
     if (poles2_x < 0) {
         poles2_x = 5;
-        poles2_height = randint(-1, 2);
+        if (!easy_mode) {
+            // make the pole gap at a height that's possible 
+            // for the bird to fall down to
+            if (poles1_height == -1) {
+                poles2_height = randint(-1, 2);
+            }
+            else {
+                poles2_height = randint(-1, 3);
+            }
+        }
+        else {
+                poles2_height = randint(-1, 2);
+        }
     }
 }
 
@@ -357,7 +381,7 @@ basic.forever(function () {
             }
             else {
                 // delay animations
-                basic.pause(500);
+                basic.pause(460);
             }
         }
     }
