@@ -22,7 +22,7 @@ function drawPoles(pole_x: number, pole_height: number) {
     }
     else {
         // draw top pole by turning on the 
-        // LED from 4 to pole_height + 3 (+2 to create 
+        // LED from 4 to pole_height + 2 (+2 to create 
         // a 1-LED wide gap for bird clearance)
         for (let i = 4; i >= pole_height + 2; i--) {
             led.plot(pole_x, i);
