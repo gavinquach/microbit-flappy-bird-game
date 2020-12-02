@@ -175,7 +175,7 @@ function drawPoles2() {
 */
 function checkImpact() {
     // if the bird descends passed the bottom of the screen
-    if (bird_y > 4) {
+    if (bird_y > 4 || bird_y < 0) {
         // end the game
         in_game = false;
         music.playTone(Note.G, 200);
