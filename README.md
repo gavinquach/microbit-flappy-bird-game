@@ -1,10 +1,15 @@
 # microbit-flappy-bird-game
-flappy bird game on a micro:bit!
+Flappy bird game on a micro:bit!
 
 This little program allows you to play the popular game Flappy Bird on your micro:bit,
 although not a perfect implementation, it represents the game well enough.
 
+## Game instruction
+On game start: Press A to play on easy mode, B to play hard mode. When in game, the bird will be constantly falling down due to gravity, press A or B to jump and dodge the poles. And try not to fall out of the screen because you will die!
 
+Game modes:
+- Easy mode: 2 bird-height wide gap between the poles, easier to maneuver around.
+- Hard mode: 1 bird-height wide gap between the pole, added a ceiling above the top of the screen, so if you try to jump too high, you will hit your head and die :)
 
 > Open this page at [https://s3757317.github.io/microbit-flappy-bird-game/](https://s3757317.github.io/microbit-flappy-bird-game/)
 
