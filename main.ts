@@ -175,7 +175,7 @@ function drawPoles2() {
 */
 function checkImpact() {
     // if the bird descends passed the bottom of the screen
-    if (bird_y > 4) {
+    if (bird_y > 4 || bird_y < 0) {
         // end the game
         in_game = false;
         music.playTone(Note.G, 200);
@@ -322,6 +322,13 @@ input.onButtonPressed(Button.B, function () {
         select_mode = false;
         // set game to hard mode
         easy_mode = false;
+    }
+})
+
+input.onButtonPressed(Button.AB, function () {
+    if(!in_game) {
+        select_mode = true;
+        point = 0; 
     }
 })
 
