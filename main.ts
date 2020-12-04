@@ -325,13 +325,6 @@ input.onButtonPressed(Button.B, function () {
     }
 })
 
-input.onButtonPressed(Button.AB, function () {
-    if(!in_game) {
-        select_mode = true;
-        point = 0; 
-    }
-})
-
 basic.forever(function () {
     // mode selection stage
     if (select_mode) {
