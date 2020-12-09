@@ -175,7 +175,7 @@ function drawPoles2() {
 */
 function checkImpact() {
     // if the bird descends passed the bottom of the screen
-    // or if it hits the ceiling
+    // or if it hits the ceiling in hard mode
     if (bird_y > 4 || (!easy_mode && bird_y < 0)) {
         // end the game
         in_game = false;
